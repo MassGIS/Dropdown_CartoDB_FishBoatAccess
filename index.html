@@ -6,6 +6,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" />
+	 <!--adding jquery autocomplete plugin-->
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="jquery.geocomplete.js"></script>
 </head>
 <body>
     <style>
@@ -18,7 +22,7 @@
 		border-color: #FFF;
 		border-bottom-style: solid;
       } 
-    #map {
+    #basemap {
         height: 1000px;
         border-top: 2px;
         border-bottom: 4px;
@@ -51,6 +55,13 @@
             border-color: #FFF;
 			background: #081B47;
         }
+		.cartodb-searchbox{
+			width: 275px !important;
+		}
+		.cartodb-searchbox input.text{
+			width: 255px !important;
+			left: 10px !important;
+		}
     </style>
 
     
@@ -261,7 +272,7 @@
                     </td>
                 <tr>
             </table>
-        <div id="map"></div>
+        <div id="basemap"></div>
     </div>
 
 
@@ -269,34 +280,113 @@
 $('body').ready(function () {
     var myCustomLayer = undefined;
 
-    var map = new L.Map('map', {
-        zoomControl: false,
+    var basemap = new L.Map('basemap', {
+        zoomControl: true,
         center: [42.15, -71.81],
-        zoom: 9
+        zoom: 9,
+		scrollwheel: true,
+		mobile_layout: true
     });
 
     //L.tileLayer('http://b.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
         //attribution: 'Stamen'
-    //}).addTo(map);
+    //}).addTo(basemap);
 
 		L.tileLayer('https://a.tiles.mapbox.com/v4/examples.ra3sdcxr/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q', {
 		  attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
-		}).addTo(map);
+		}).addTo(basemap);
 
    // L.tileLayer('http://a.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
       //  attribution: 'Stamen'
-   // }).addTo(map);
+   // }).addTo(basemap);
 
    // L.tileLayer('https://cartocdn_{s}.global.ssl.fastly.net/base-eco/{z}/{x}/{y}.png', {
        // attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
-  //  }).addTo(map);
+  //  }).addTo(basemap);
 
-    cartodb.createLayer(map, 'https://massgis.cartodb.com/u/massgis-admin/api/v2_1/viz/9916f4bc-1043-11e5-a5e4-0e4fddd5de28/viz.json')
-        .addTo(map)
+    cartodb.createLayer(basemap, 'https://massgis.cartodb.com/u/massgis-admin/api/v2_1/viz/9916f4bc-1043-11e5-a5e4-0e4fddd5de28/viz.json')
+        .addTo(basemap)
         .on('done', function (layer) {
         myCustomLayer = layer;
         //layer.setQuery('SELECT * FROM ofba_pt');
         layer.setInteraction(true);
+		 //Adding search bar to the basemap
+                        var v = cdb.vis.Overlay.create('search', basemap.viz, {})
+                        v.show();
+                        $('#basemap')
+                            .append(v.render()
+                                .el);
+                        //Adding placeholder to search box
+                        $('.cartodb-searchbox')
+                            .find('input.text')
+                            .attr('placeholder', 'Enter an address, town, or place...');
+                        //calling geocomplete plugin
+                        $('.cartodb-searchbox')
+                            .find('input.text')
+                            .geocomplete({
+                                basemap: '#basemap'
+                            });
+                        //place marker function for saving zooming 
+                        var arr, count = 0
+                            , marker;
+						
+						//creating custom marker ivon
+						//var greenIcon = L.icon({
+							//iconUrl: '256-256-6096188ce806c80cf30dca727fe7c237.png',
+							////shadowUrl: 'leaf-shadow.png',
+
+							//iconSize:     [38, 38], // size of the icon
+							//shadowSize:   [50, 64], // size of the shadow
+							//iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+							//shadowAnchor: [4, 62],  // the same for the shadow
+							//popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+						//});
+						
+                        var placeMarker = function (event, result) {
+                                count++;
+                                console.log(count);
+                                if (count == 1) {
+                                    //creating empty array
+                                    arr = [];
+                                    //storing latitute for current location
+                                    arr[0] = result.geometry.location.lat();
+                                    //storing langitude for current location
+                                    arr[1] = result.geometry.location.lng();
+                                    //adding lan and lat value to marker object
+                                    marker = L.marker([arr[0], arr[1]]); //, {icon: greenIcon});
+                                    //adding marker object to basemap
+                                    marker.addTo(basemap).bindPopup(".cartodb-searchbox input.text");
+                                    //Adding zoom level
+                                    basemap.setZoom(10);
+                                    //Pans the basemap to a given center. Makes an animated pan if new center is not more than one screen away from the current one.
+                                    basemap.panTo([arr[0], arr[1]]);
+                                } else {
+                                    //removing existing layer from the basemap
+                                    basemap.removeLayer(marker);
+                                    //creating empty array
+                                    arr = [];
+                                    //storing latitute for current location
+                                    arr[0] = result.geometry.location.lat();
+                                    //storing langitude for current location
+                                    arr[1] = result.geometry.location.lng();
+                                    //adding lan and lat value to marker object
+                                    marker = L.marker([arr[0], arr[1]]);
+                                    //adding marker object to basemap
+                                    marker.addTo(basemap);
+                                    //Adding zoom level
+                                    basemap.setZoom(10);
+                                    //Pans the basemap to a given center. Makes an animated pan if new center is not more than one screen away from the current one.
+                                    basemap.panTo([arr[0], arr[1]]);
+                                }
+                            }
+                            //calling place marker function
+                        $('.cartodb-searchbox')
+                            .find('input.text')
+                            .bind("geocode:result", placeMarker);
+                        $('.cartodb-searchbox')
+                            .find('input.submit')
+                            .detach();
+                    
     });
 
     $('#mapControl select').change(function () {
