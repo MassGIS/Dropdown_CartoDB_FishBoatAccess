@@ -13,28 +13,31 @@
         height: 100%;
         padding: 0;
         margin: 0;
-        background-color: white;     
+        background: #081B47;
+		border-bottom: 2px;
+		border-color: #FFF;
+		border-bottom-style: solid;
       } 
     #map {
         height: 1000px;
         border-top: 2px;
-        border-bottom: 2px;
+        border-bottom: 4px;
         border-right: 0px;
         border-left: 0px;
         border-style: solid;
         padding: 0px;
-        border-color: #000000;
+        border-color: #FFF;
         background-color: #696969;
         
       }
         .form-group{
             width: 250px;
             padding-left: 25px;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             padding-top: 10px;
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
             font-size: 14px !important;
-            color: #333 !important;
+            color: #fff !important;
             font-weight: bold !important;
 
         }
@@ -45,7 +48,8 @@
             border-right: 0px;
             border-left: 0px;
             border-style: solid;
-            border-color: #000000;
+            border-color: #FFF;
+			background: #081B47;
         }
     </style>
 
@@ -55,7 +59,7 @@
                 <tr>
                     <td class="form-group" style="font-size: 20px !important; width: 300px; text-align: center !important;">FISHING and BOATING ACCESS SITES</td>
                     <td class="form-group">
-                        <label for="town">Town</label>
+                        <label for="town">TOWN</label>
                         <select name="town" class="form-control">
                             <option value="">- All -</option>
                             <option value="AQUINNAH">Aquinnah</option>
@@ -220,7 +224,7 @@
                         </select>
                     </td>
                     <td class="form-group">
-                        <label for="fish_codes">Fish Species</label>
+                        <label for="fish_codes">FISH SPECIES</label>
                         <select name="fish_codes" class="form-control">
                             <option value="All">- All -</option>
                             <option value="Trout">Trout</option>
@@ -244,7 +248,7 @@
                         </select>
                     </td>
                     <td class="form-group">
-                        <label for="facil_type">Facility Type</label>
+                        <label for="facil_type">FACILITY TYPE</label>
                         <select name="facil_type" class="form-control">
                             <option value="">- All -</option>
                             <option value="General Access">General Access</option>
@@ -267,15 +271,17 @@ $('body').ready(function () {
 
     var map = new L.Map('map', {
         zoomControl: false,
-        center: [42.25, -71.81],
-        zoom: 11
+        center: [42.15, -71.81],
+        zoom: 9
     });
 
     //L.tileLayer('http://b.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
-       // attribution: 'Stamen'
+        //attribution: 'Stamen'
     //}).addTo(map);
 
-
+		L.tileLayer('https://a.tiles.mapbox.com/v4/examples.ra3sdcxr/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q', {
+		  attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+		}).addTo(map);
 
    // L.tileLayer('http://a.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
       //  attribution: 'Stamen'
@@ -311,79 +317,79 @@ $('body').ready(function () {
                 switch (fish_codes) {
                     case "All":
                         subQuery = "fish_codes IS NOT NULL";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #FF9900; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#FFCC00; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 19;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 16;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 13;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 10;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#0F3B82; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Trout":
                         subQuery = "fish_codes ILIKE '%1,%' or fish_codes ILIKE '%, 1%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #5a9497; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#81d4d9; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#5a9497; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Largemouth Bass":
                         subQuery = "fish_codes ILIKE '%2,%' or fish_codes ILIKE '%, 2%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #cc6629; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#ff8034; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#cc6629; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Smallmouth Bass":
                         subQuery = "fish_codes ILIKE '%3,%' or fish_codes ILIKE '%, 3%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #5c1377; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#b827ee; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#5c1377; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Northern Pike":
                         subQuery = "fish_codes ILIKE '%4,%' or fish_codes ILIKE '%, 4%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #97b200; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#d8ff00; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#97b200; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Tiger Muskee":
                         subQuery = "fish_codes ILIKE '%5,%' or fish_codes ILIKE '%, 5%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #004184; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#006ddc; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#004184; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "White Perch":
                         subQuery = "fish_codes ILIKE '%6,%' or fish_codes ILIKE '%, 6%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #008431; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#00dc53; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#008431; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Pickerel":
                         subQuery = "fish_codes ILIKE '%7,%' or fish_codes ILIKE '%, 7%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #00427f; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #0084ff; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#00427f; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Black Crappie":
                         subQuery = "fish_codes ILIKE '%8,%' or fish_codes ILIKE '%, 8%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #a02900; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #e53b00; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#a02900; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Walleye":
                         subQuery = "fish_codes ILIKE '%9,%' or fish_codes ILIKE '%, 9%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #6f0012; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #9f001a; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#6f0012; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Striped Bass":
                         subQuery = "fish_codes ILIKE '%10,%' or fish_codes ILIKE '%, 10%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #550052; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #d500cd; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#550052; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Bluefish":
                         subQuery = "fish_codes ILIKE '%11,%' or fish_codes ILIKE '%, 11%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #789966; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #c9ffab; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#789966; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Bonito":
                         subQuery = "fish_codes ILIKE '%12,%' or fish_codes ILIKE '%, 12%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #000000; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #fff; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#000000; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "False Albacore":
                         subQuery = "fish_codes ILIKE '%13,%' or fish_codes ILIKE '%, 13%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #2f540c; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #4f8c14; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#2f540c; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Tautog":
                         subQuery = "fish_codes ILIKE '%14,%' or fish_codes ILIKE '%, 14%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #35001b; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #6b0037; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#35001b; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Fluke":
                         subQuery = "fish_codes ILIKE '%15,%' or fish_codes ILIKE '%, 15%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #771353; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #ee27a6; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#771353; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Cod":
                         subQuery = "fish_codes ILIKE '%16,%' or fish_codes ILIKE '%, 16%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #858E17; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #deee27; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#858E17; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Flounder":
                         subQuery = "fish_codes ILIKE '%17,%' or fish_codes ILIKE '%, 17%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #9c800c; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #e0b712; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#9c800c; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                         break;
                     case "Squetague - Weak Fish":
                         subQuery = "fish_codes ILIKE '%18,%' or fish_codes ILIKE '%, 18%'";
-                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-fill-opacity: 1; marker-line-color: #004b35; marker-line-width: 2; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill: #007e59; marker-comp-op: multiply; marker-type: ellipse; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 17;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 14;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 11;}#ofba_pt [ sitemapsiz <= 75] {marker-width: 8;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 5;}");
+                        myCustomLayer.setCartoCSS ("#ofba_pt{ marker-file: url(https://s3.amazonaws.com/com.cartodb.users-assets.production/production/massgis-admin/assets/20150612132814amago.svg); marker-fill-opacity: 1; marker-line-opacity: 1; marker-allow-overlap: true; marker-fill:#004b35; marker-comp-op: multiply; marker-placement: point; marker-allow-overlap: true; marker-clip: false; marker-multi-policy: largest;}#ofba_pt [ sitemapsiz > 150 ] {marker-width: 40;}#ofba_pt [ sitemapsiz <= 150] {marker-width: 35;}#ofba_pt [ sitemapsiz <= 100] {marker-width: 30;}#ofba_pt [ sitemapsiz <= 75] {marker-width:25;}#ofba_pt [ sitemapsiz <= 50] {marker-width: 20;}");
                 }
 
                 baseQuery = baseQuery + " AND (" + subQuery + ')';
