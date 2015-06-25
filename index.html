@@ -304,7 +304,7 @@ $('body').ready(function () {
        // attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
   //  }).addTo(basemap);
 
-    cartodb.createLayer(basemap, 'https://massgis.cartodb.com/u/massgis-admin/api/v2_1/viz/9916f4bc-1043-11e5-a5e4-0e4fddd5de28/viz.json')
+    cartodb.createLayer(basemap, 'https://massgis.cartodb.com/u/massgis-admin/api/v2/viz/9916f4bc-1043-11e5-a5e4-0e4fddd5de28/viz.json')
         .addTo(basemap)
         .on('done', function (layer) {
         myCustomLayer = layer;
